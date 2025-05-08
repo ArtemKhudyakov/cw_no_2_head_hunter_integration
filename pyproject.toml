@@ -35,6 +35,8 @@ python-dotenv = "^1.1.0"
 pandas-stubs = "^2.2.3.250308"
 requests = "^2.32.3"
 types-requests = "^2.32.0.20250328"
+colorama = "^0.4.6"
+bs4 = "^0.0.2"
 
 
 [tool.mypy]
