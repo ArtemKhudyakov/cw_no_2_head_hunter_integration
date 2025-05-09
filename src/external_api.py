@@ -163,69 +163,26 @@ class HeadHunterApiVacancies:
              'requirements': Viewer.clean_html(
                  str(str(i.get('snippet', '').get('requirement', '')) + str(
                      i.get('snippet', '').get('responsibility', '')))),
-
              'experience': i['experience']['name'], 'schedule': i['schedule']['name'],
              'employment': i['employment']['name'], 'employment_form': i['employment_form']['name']} for i in
             vacancies_data['items']]
         with open(self.__vacancies_file, 'w', encoding='utf-8') as f:
             json.dump(vacancies_formated_data, f, ensure_ascii=False, indent=2)
 
-    @staticmethod
-    def print_colorful_vacancy(vacancy: dict):
-        """Красиво выводит вакансию с подсветкой"""
-        print(f"\n{Fore.YELLOW}{vacancy['name']}{Style.RESET_ALL}")
-        print(f"{Fore.CYAN}Компания: {vacancy.get('employer', {}).get('name', 'Не указано')}")
-        print(f"{Fore.CYAN}Зарплата: {HeadHunterApiVacancies.format_salary(vacancy.get('salary'))}")
-
-        # Обработка описания с цветной подсветкой
-        if 'description' in vacancy:
-            print(f"\n{Fore.GREEN}Описание:{Style.RESET_ALL}")
-            print(HeadHunterApiVacancies.highlight_text(vacancy['description']))
-
-        # Обработка требований
-        if 'key_skills' in vacancy:
-            print(f"\n{Fore.GREEN}Ключевые навыки:{Style.RESET_ALL}")
-            for skill in vacancy['key_skills']:
-                print(f"- {HeadHunterApiVacancies.highlight_text(skill['name'])}")
-
-    @staticmethod
-    def highlight_text(text: str) -> str:
-        """Заменяет <highlighttext> на цветное выделение"""
-        return re.sub(
-            r'<highlighttext>(.*?)<\/highlighttext>',
-            f'{Back.YELLOW}{Fore.BLACK}\\1{Style.RESET_ALL}',
-            text
-        )
-
-    @staticmethod
-    def format_salary(salary: dict | None) -> str:
-        """Форматирует информацию о зарплате"""
-        if not salary:
-            return "Не указана"
-
-        parts = []
-        if salary.get('from'):
-            parts.append(f"от {salary['from']}")
-        if salary.get('to'):
-            parts.append(f"до {salary['to']}")
-        if salary.get('currency'):
-            parts.append(salary['currency'])
-
-        return " ".join(parts) if parts else "Не указана"
-
 
 if __name__ == '__main__':
-    params = {'text': 'Инженер по сварке', 'area': 'Челябинск', 'page': 0, 'per_page': 10}
+    params = {'text': 'Инженер по сварке', 'area': 'Екатеринбург', 'page': 0, 'per_page': 10}
     vacancies1 = HeadHunterApiVacancies('Инженер по сварке', params)
 
     vacancies1.vacancies_saver()
     with open(vacancies1.vacancies_file, 'r', encoding='utf-8') as f:
         data = json.load(f)
+        print(data)
         for vacancy in data:
-            print(vacancy)
+            Viewer.print_vacancy(vacancy)
             print("\n" + "=" * 50 + "\n")
-        print (len(data))
+        print(len(data))
 
-        # for vacancy in data['items']:
-        #     HeadHunterApiVacancies.print_colorful_vacancy(vacancy)
+        # for vacancy.py in data['items']:
+        #     HeadHunterApiVacancies.print_colorful_vacancy(vacancy.py)
         #     print("\n" + "=" * 50 + "\n")
