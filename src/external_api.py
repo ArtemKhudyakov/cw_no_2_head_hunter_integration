@@ -3,17 +3,13 @@ import json
 import pathlib as p
 import os
 from typing import Any
-from colorama import Fore, Back, Style, init
-import re
 
+from src.base_classes import BaseParser
 from src.temp_vacancy_storage import TempVacancyStorage
 from src.viewer import Viewer
 
-# Инициализация Colorama
-init(autoreset=True)
 
-
-class HeadHunterApiVacancies:
+class HeadHunterApiVacancies(BaseParser):
     """
     Класс для работы с API HeadHunter
     Класс Parser является родительским классом, который вам необходимо реализовать

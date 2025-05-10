@@ -93,7 +93,7 @@ class Vacancy:
         )
 
 
-    # --- Новые методы для сортировки и фильтрации ---
+    # Методы для сортировки и фильтрации
     @property
     def experience_level(self) -> ExperienceLevel:
         """Преобразует текст опыта в стандартизированный Enum."""
@@ -124,7 +124,7 @@ class Vacancy:
         else:
             return ScheduleType.FULL_DAY
 
-    # --- Методы для фильтрации ---
+    # Методы для фильтрации
     @staticmethod
     def filter_by_schedule(vacancies: List['Vacancy'], schedule: ScheduleType) -> List['Vacancy']:
         """Фильтрует вакансии по графику работы."""
@@ -135,7 +135,7 @@ class Vacancy:
         """Фильтрует вакансии по опыту работы."""
         return [v for v in vacancies if v.experience_level == experience]
 
-    # --- Методы для сортировки ---
+    # Методы для сортировки
     @staticmethod
     def sort_by_experience(vacancies: List['Vacancy'], reverse: bool = False) -> List['Vacancy']:
         """Сортирует вакансии по уровню опыта."""
