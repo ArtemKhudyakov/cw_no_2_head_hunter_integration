@@ -4,7 +4,7 @@ import pathlib as p
 import os
 from typing import Any
 
-from src.base_classes import BaseParser
+from src.base_parser import BaseParser
 from src.temp_vacancy_storage import TempVacancyStorage
 from src.viewer import Viewer
 
@@ -12,7 +12,6 @@ from src.viewer import Viewer
 class HeadHunterApiVacancies(BaseParser):
     """
     Класс для работы с API HeadHunter
-    Класс Parser является родительским классом, который вам необходимо реализовать
     """
 
     def __init__(self, position: str, params: dict[str, Any]) -> None:
@@ -29,11 +28,19 @@ class HeadHunterApiVacancies(BaseParser):
         # Путь к папке data
         data_dir_path = project_root_path / 'data'
 
+        #Путь к папке areas_data
+        areas_data_dir_path = data_dir_path / 'areas_data'
+
+        #Путь к папке loaded_vacancies
+        loaded_vacancies_dir_path = data_dir_path / 'loaded_vacancies'
+
         # Создаем папку data, если ее нет
         os.makedirs(data_dir_path, exist_ok=True)
+        os.makedirs(areas_data_dir_path, exist_ok=True)
+        os.makedirs(loaded_vacancies_dir_path, exist_ok=True)
 
-        self.__areas_file = data_dir_path / 'areas.json'
-        self.__vacancies_file = data_dir_path / f'{self.__position}_{self.__params.get('area', '')}.json'
+        self.__areas_file = areas_data_dir_path/'areas.json'
+        self.__vacancies_file = loaded_vacancies_dir_path / f'{self.__position.lower()}_{self.__params.get('area', '').lower()}.json'
 
     def __repr__(self) -> str:
         return f'<HeadHunterApiVacancies position={self.__position}>'
@@ -49,15 +56,25 @@ class HeadHunterApiVacancies(BaseParser):
     def params(self) -> dict[str, Any]:
         return self.__params
 
+    @staticmethod
+    def params_input() -> [str, Any]:
+        params = {'text': input('\nВведите название вакансии\n'),
+                  'area': input('\nВведите город для поиска\n'),
+                  'page': int(input('\nВведите номер страницы\n')),
+                  'per_page': int(input('\nВведите количество вакансий для вывода на странице\n'))}
+        return params
+
+    @staticmethod
+    def position_input(params:dict[str, Any]) -> [str, Any]:
+        position = params.get('text', '')
+        return position
+
     @property
     def vacancies_file(self) -> p.Path:
         return self.__vacancies_file
 
     def areas_data_refresh(self) -> None:
-        """
-        Обновляет данные о регионах с HH и сохраняет в файл.
-        В случае ошибок выбрасывает исключения с описанием.
-        """
+        """Обновляет данные о регионах с HH и сохраняет в файл."""
         response = requests.get(f'{self.__base_url}/areas/')
 
         if response.status_code == 200:

@@ -47,7 +47,8 @@ class Viewer:
     @staticmethod
     def print_vacancy(vacancy: dict) -> None:
         """Красиво выводит вакансию в консоль"""
-        print(f"\n{Fore.YELLOW}{vacancy['vacancy']}{Style.RESET_ALL}")
+        print(f"\n{vacancy['id']}")
+        print(f"{Fore.YELLOW}{vacancy['vacancy']}{Style.RESET_ALL}")
         print(f"{Fore.CYAN}Компания: {vacancy.get('employer', 'Не указано')}")
         print(f"{Fore.CYAN}Зарплата: {Viewer.format_salary(vacancy.get('salary'))}")
         print(f"{Fore.MAGENTA}Город: {vacancy.get('city', 'Не указан')}")

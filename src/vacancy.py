@@ -2,12 +2,14 @@ from typing import Optional, Dict, Any, List
 from dataclasses import dataclass
 from enum import Enum
 
+
 # Перечисление для стандартизации опыта работы
 class ExperienceLevel(Enum):
     NO_EXPERIENCE = "Нет опыта"
     BETWEEN_1_3 = "От 1 года до 3 лет"
     BETWEEN_3_6 = "От 3 до 6 лет"
     MORE_6 = "Более 6 лет"
+
 
 # Перечисление для графиков работы
 class ScheduleType(Enum):
@@ -47,9 +49,15 @@ class Vacancy:
             f"Компания: {self.employer}\n"
             f"Зарплата: {salary}\n"
             f"Город: {self.city}\n"
-            f"Требования: {self.requirements[:100]}...\n"
+            f"Требования: {self.requirements}\n"
             f"Ссылка: {self.url}"
         )
+
+    def __repr__(self):
+        return {"id": self.id, "vacancy": self.title,
+                "salary": {"from": self.salary_from, "to": self.salary_to, "currency": self.currency},
+                "employer": self.employer, "city": self.city, "requirements": self.requirements,
+                "experience": self.experience, "schedule": self.schedule, "url": self.url}
 
     def format_salary(self) -> str:
         """Форматирует зарплату для вывода."""
@@ -71,7 +79,6 @@ class Vacancy:
     def __gt__(self, other: 'Vacancy') -> bool:
         return self.salary_from > other.salary_from
 
-
     @classmethod
     def from_saved_dict(cls, saved_data: Dict[str, Any]) -> 'Vacancy':
         """Создает Vacancy из сохраненных данных (из JSON/БД)."""
@@ -91,7 +98,6 @@ class Vacancy:
             schedule=saved_data.get("schedule", ""),
             url=f"https://hh.ru/vacancy/{saved_data.get('id', '')}"
         )
-
 
     # Методы для сортировки и фильтрации
     @property
