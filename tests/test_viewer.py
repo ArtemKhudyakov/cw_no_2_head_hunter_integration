@@ -1,8 +1,10 @@
 from typing import Any, Dict, List, Optional
+
 import pytest
-from bs4 import BeautifulSoup
 from colorama import Fore, Style
+
 from src.viewer import Viewer  # Замените на реальный импорт
+
 
 @pytest.mark.parametrize(
     "html_input, expected",
@@ -38,9 +40,7 @@ def test_format_salary(salary: Optional[Dict[str, Any]], expected: str) -> None:
     assert Viewer.format_salary(salary) == expected
 
 
-def test_print_vacancy_full(
-    capsys: pytest.CaptureFixture[str], sample_vacancy: Dict[str, Any]
-) -> None:
+def test_print_vacancy_full(capsys: pytest.CaptureFixture[str], sample_vacancy: Dict[str, Any]) -> None:
     """Тестирует вывод полной вакансии."""
     Viewer.print_vacancy(sample_vacancy)
     captured = capsys.readouterr()
@@ -70,9 +70,7 @@ def test_print_vacancy_minimal(capsys: pytest.CaptureFixture[str]) -> None:
     assert "Не указана" in output
 
 
-def test_print_vacancies(
-    capsys: pytest.CaptureFixture[str], sample_vacancies: List[Dict[str, Any]]
-) -> None:
+def test_print_vacancies(capsys: pytest.CaptureFixture[str], sample_vacancies: List[Dict[str, Any]]) -> None:
     """Тестирует вывод списка вакансий."""
     Viewer.print_vacancies(sample_vacancies)
     captured = capsys.readouterr()

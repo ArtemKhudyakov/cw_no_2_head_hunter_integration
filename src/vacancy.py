@@ -1,4 +1,4 @@
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
@@ -67,11 +67,7 @@ class Vacancy:
         return {
             "id": self.id,
             "vacancy": self.title,
-            "salary": {
-                "from": self.salary_from,
-                "to": self.salary_to,
-                "currency": self.currency
-            },
+            "salary": {"from": self.salary_from, "to": self.salary_to, "currency": self.currency},
             "employer": self.employer,
             "city": self.city,
             "requirements": self.requirements,
@@ -109,7 +105,7 @@ class Vacancy:
     @classmethod
     def from_saved_dict(cls, saved_data: Dict[str, Any]) -> "Vacancy":
         """Создает Vacancy из сохраненных данных (из JSON/БД)."""
-        salary_data = saved_data.get("salary", {})
+        salary_data = saved_data.get("salary", {}) or {}  # Добавляем fallback на пустой dict
 
         return cls(
             id=saved_data.get("id", ""),
@@ -180,9 +176,9 @@ class Vacancy:
             salary_str = vacancy.format_salary()
             result.append(
                 "=" * 50 + f"\nID: {vacancy.id}\n"
-                           f"Вакансия: {vacancy.title}\n"
-                           f"Компания: {vacancy.employer}, город: {vacancy.city}\n"
-                           f"Зарплата: {salary_str}\n"
+                f"Вакансия: {vacancy.title}\n"
+                f"Компания: {vacancy.employer}, город: {vacancy.city}\n"
+                f"Зарплата: {salary_str}\n"
             )
 
         return "\n".join(result)

@@ -1,14 +1,12 @@
 import json
-import tempfile
 from pathlib import Path
-from unittest.mock import patch, MagicMock
-
-import pytest
-
+from unittest.mock import MagicMock, patch
+from typing import Any, Tuple
 from src.external_api import HeadHunterApiVacancies
+from src.temp_vacancy_storage import TempVacancyStorage
 
 
-def test_init(api_instance):
+def test_init(api_instance: HeadHunterApiVacancies) -> None:
     """Тест инициализации класса."""
     assert api_instance.base_url == "https://api.hh.ru"
     assert api_instance.params["text"] == "Python"
@@ -16,7 +14,9 @@ def test_init(api_instance):
 
 
 @patch("requests.get")
-def test_areas_data_refresh_success(mock_get, api_instance, temp_files):
+def test_areas_data_refresh_success(
+    mock_get: MagicMock, api_instance: HeadHunterApiVacancies, temp_files: Tuple[Path, Path]
+) -> None:
     """Тест успешного обновления данных о регионах."""
     temp_areas_file, _ = temp_files
 
@@ -29,12 +29,14 @@ def test_areas_data_refresh_success(mock_get, api_instance, temp_files):
 
     assert temp_areas_file.exists()
     with open(temp_areas_file, "r", encoding="utf-8") as f:
-        data = json.load(f)
+        data: Any = json.load(f)
         assert data == [{"id": 1, "name": "Москва"}]
 
 
 @patch("requests.get")
-def test_load_vacancies_success(mock_get, api_instance, temp_files):
+def test_load_vacancies_success(
+    mock_get: MagicMock, api_instance: HeadHunterApiVacancies, temp_files: Tuple[Path, Path]
+) -> None:
     """Тест успешной загрузки вакансий."""
     temp_areas_file, _ = temp_files
 
@@ -63,5 +65,5 @@ def test_load_vacancies_success(mock_get, api_instance, temp_files):
     with open(temp_areas_file, "w", encoding="utf-8") as f:
         json.dump([{"id": 1, "name": "Москва", "areas": []}], f)
 
-    storage = api_instance.load_vacancies()
+    storage: TempVacancyStorage = api_instance.load_vacancies()
     assert Path(storage.file_path).exists()

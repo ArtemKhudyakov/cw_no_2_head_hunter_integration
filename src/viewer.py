@@ -11,7 +11,7 @@ class Viewer:
         soup = BeautifulSoup(text, "html.parser")
         for script in soup(["script", "style"]):
             script.replace_with(script.text)
-        return ' '.join(soup.stripped_strings)
+        return " ".join(soup.stripped_strings)
 
     @staticmethod
     def format_salary(salary: dict | None) -> str:

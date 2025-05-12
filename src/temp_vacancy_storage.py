@@ -3,6 +3,7 @@ import os
 import tempfile
 from typing import Any, Optional, Type
 
+
 class TempVacancyStorage:
     def __init__(self) -> None:
         """Создает временный файл при инициализации"""

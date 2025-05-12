@@ -1,7 +1,7 @@
 import json
 import os
 import pathlib as p
-from typing import Dict, List, Any
+from typing import Any, Dict, List
 
 from src.base_favorites_storage import BaseFavoritesStorage
 from src.vacancy import Vacancy
@@ -33,6 +33,12 @@ class JSONFavoritesStorage(BaseFavoritesStorage):
             if favorites_file != ""
             else self.__favorites_dir_path / "favorites.json"
         )
+
+    def source_file(self) -> p.Path:
+        return self.__source_file
+
+    def favorites_file(self) -> p.Path:
+        return self.__favorites_file
 
     def load_source_vacancies(self) -> List[Dict[str, Any]]:
         """Загружает исходные вакансии"""

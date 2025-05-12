@@ -5,7 +5,8 @@ from src.favorites_storage import JSONFavoritesStorage
 from src.vacancy import Vacancy
 from src.viewer import Viewer
 
-if __name__ == "__main__":
+
+def main() -> None:
 
     print(
         """Привет!
@@ -117,3 +118,7 @@ if __name__ == "__main__":
 
             else:
                 exit()
+
+
+if __name__ == "__main__":
+    main()

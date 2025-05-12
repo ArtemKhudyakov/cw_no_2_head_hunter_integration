@@ -1,7 +1,7 @@
 import json
 import os
 import pathlib as p
-from typing import Any, Dict, Optional, Tuple, Union
+from typing import Any, Dict, Union
 
 import requests
 
@@ -41,7 +41,7 @@ class HeadHunterApiVacancies(BaseParser):
 
         self.__areas_file = areas_data_dir_path / "areas.json"
         self.__vacancies_file = (
-                loaded_vacancies_dir_path / f"{self.__position.lower()}_{self.__params.get('area', '').lower()}.json"
+            loaded_vacancies_dir_path / f"{self.__position.lower()}_{self.__params.get('area', '').lower()}.json"
         )
 
     def __repr__(self) -> str:
@@ -93,7 +93,7 @@ class HeadHunterApiVacancies(BaseParser):
             "text": text,
             "area": area,
             "page": str(page),  # API ожидает строку для параметров
-            "per_page": str(per_page)  # API ожидает строку для параметров
+            "per_page": str(per_page),  # API ожидает строку для параметров
         }
         return params
 
@@ -107,6 +107,21 @@ class HeadHunterApiVacancies(BaseParser):
     def vacancies_file(self) -> p.Path:
         """Возвращает путь к файлу БД для записи"""
         return self.__vacancies_file
+
+    @vacancies_file.setter
+    def vacancies_file(self, value: p.Path) -> None:
+        """Устанавливает путь к файлу с вакансиями."""
+        self.__vacancies_file = value
+
+    @property
+    def areas_file(self) -> p.Path:
+        """Возвращает путь к файлу регионов"""
+        return self.__areas_file
+
+    @areas_file.setter
+    def areas_file(self, value: p.Path) -> None:
+        """Устанавливает путь к файлу с регионами."""
+        self.__areas_file = value
 
     def areas_data_refresh(self) -> None:
         """Обновляет данные о регионах с HH и сохраняет в файл."""
