@@ -20,6 +20,19 @@ class ScheduleType(Enum):
 
 @dataclass
 class Vacancy:
+    __slots__ = [
+        'id',
+        'title',
+        'salary_from',
+        'salary_to',
+        'currency',
+        'employer',
+        'city',
+        'requirements',
+        'experience',
+        'schedule',
+        'url'
+    ]
     id: str
     title: str
     salary_from: Optional[int]
