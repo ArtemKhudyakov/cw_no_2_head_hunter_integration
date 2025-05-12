@@ -1,7 +1,5 @@
 from abc import ABC, abstractmethod
-import json
-from typing import List, Dict, Any
-import pathlib
+from typing import Dict, List
 
 
 class BaseFavoritesStorage(ABC):
@@ -15,21 +13,31 @@ class BaseFavoritesStorage(ABC):
         pass
 
     @abstractmethod
-    def add_vacancy(self, vacancy: Dict[str, Any]) -> None:
-        """Добавление вакансии в файл"""
+    def load_source_vacancies(self) -> List[Dict]:
+        """Загружает исходные вакансии"""
         pass
 
     @abstractmethod
-    def get_vacancies(self, criteria: Dict[str, Any]) -> List[Dict[str, Any]]:
-        """Получение вакансий по критериям"""
+    def load_favorites(self) -> List[Dict]:
+        """Загружает избранные вакансии"""
         pass
 
     @abstractmethod
-    def delete_vacancy(self, vacancy_id: str) -> None:
-        """Удаление вакансии по ID"""
+    def save_favorites(self, favorites_id_str: str) -> None:
+        """Сохраняет избранные вакансии"""
         pass
 
     @abstractmethod
-    def clear_all(self) -> None:
-        """Полная очистка файла с вакансиями"""
+    def remove_from_favorites(self, vacancy_ids: str) -> None:
+        """Удаляет вакансии из избранного по id"""
+        pass
+
+    @abstractmethod
+    def clear_favorites(self) -> None:
+        """Удаляет все избранные вакансии из указанной категории"""
+        pass
+
+    @abstractmethod
+    def delete_favorites_file(self) -> None:
+        """Удаляет файл категории из избранного"""
         pass

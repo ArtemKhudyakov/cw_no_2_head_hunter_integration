@@ -1,6 +1,6 @@
+import pathlib
 from abc import ABC, abstractmethod
 from typing import Any, Dict
-import pathlib
 
 
 class BaseParser(ABC):
@@ -27,7 +27,6 @@ class BaseParser(ABC):
     def load_vacancies(self) -> Any:
         """Загрузка вакансий"""
         pass
-
 
     @abstractmethod
     def __repr__(self) -> str:

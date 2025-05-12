@@ -1,6 +1,5 @@
-import re
 from bs4 import BeautifulSoup
-from colorama import Fore, Back, Style
+from colorama import Fore, Style
 
 
 class Viewer:
@@ -9,24 +8,7 @@ class Viewer:
     @staticmethod
     def clean_html(text: str) -> str:
         """Удаляет HTML-теги из текста (включая <highlighttext>)"""
-        return BeautifulSoup(text, 'html.parser').get_text()
-
-
-    @staticmethod
-    def format_salary(salary: dict | None) -> str:
-        """Форматирует зарплату в читаемый вид"""
-        if not salary:
-            return "Не указана"
-
-        parts = []
-        if salary.get('from'):
-            parts.append(f"от {salary['from']}")
-        if salary.get('to'):
-            parts.append(f"до {salary['to']}")
-        if salary.get('currency'):
-            parts.append(salary['currency'])
-
-        return " ".join(parts) if parts else "Не указана"
+        return BeautifulSoup(text, "html.parser").get_text()
 
     @staticmethod
     def format_salary(salary: dict | None) -> str:
@@ -35,12 +17,12 @@ class Viewer:
             return "Не указана"
 
         parts = []
-        if salary.get('from'):
+        if salary.get("from"):
             parts.append(f"от {salary['from']}")
-        if salary.get('to'):
+        if salary.get("to"):
             parts.append(f"до {salary['to']}")
-        if salary.get('currency'):
-            parts.append(salary['currency'])
+        if salary.get("currency"):
+            parts.append(salary["currency"])
 
         return " ".join(parts) if parts else "Не указана"
 
@@ -56,9 +38,9 @@ class Viewer:
         print(f"{Fore.MAGENTA}График: {vacancy.get('schedule', 'Не указан')}")
 
         # Вывод требований (если есть)
-        if 'requirements' in vacancy:
+        if "requirements" in vacancy:
             print(f"\n{Fore.GREEN}Требования:{Style.RESET_ALL}")
-            print(vacancy['requirements'])
+            print(vacancy["requirements"])
 
     @staticmethod
     def print_vacancies(vacancies: list[dict]) -> None:
