@@ -7,8 +7,11 @@ class Viewer:
 
     @staticmethod
     def clean_html(text: str) -> str:
-        """Удаляет HTML-теги из текста (включая <highlighttext>)"""
-        return BeautifulSoup(text, "html.parser").get_text()
+        """Удаляет HTML-теги из текста, оставляя содержимое всех тегов включая <script>"""
+        soup = BeautifulSoup(text, "html.parser")
+        for script in soup(["script", "style"]):
+            script.replace_with(script.text)
+        return ' '.join(soup.stripped_strings)
 
     @staticmethod
     def format_salary(salary: dict | None) -> str:
